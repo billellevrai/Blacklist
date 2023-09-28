@@ -64,21 +64,22 @@
     <div class="search-container">
         <h1>Numéro de client</h1>
         <input type="text" id="searchInput" placeholder="Search...">
-        <button onclick="search()" style="margin-top: 10px;">Retour?</button>
+        <button onclick="search()" style="margin-top: 10px;">Verifier</button>
         <p id="searchResult"></p>
     </div>
 
     <script>
-        function search() {
-            const searchTerm = document.getElementById('searchInput').value;
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    const result = data.includes(searchTerm);
-                    document.getElementById('searchResult').textContent = result ? 'True' : 'False';
-                })
-                .catch(error => console.error(error));
-        }
-    </script>
+    function search() {
+        const searchTerm = document.getElementById('searchInput').value;
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const result = data.includes(searchTerm);
+                const resultText = result ? "Ce client n'existe pas dans la base de donnee" : "Ce client existe dans la base de donnee";
+                document.getElementById('searchResult').textContent = resultText;
+            })
+            .catch(error => console.error(error));
+    }
+</script>
 </body>
 </html>
