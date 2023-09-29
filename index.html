@@ -76,7 +76,7 @@
             .then(response => response.json())
             .then(data => {
                 const result = data.includes(searchTerm);
-                const resultText = result ? "✔️Ce client n'existe pas dans la base de donnee ✔️" : "⚠️Ce client existe dans la base de donnee ⚠️";
+                const resultText = result ? "⚠️Ce client existe dans la base de donnee ⚠️" : "✔️Ce client n'existe pas dans la base de donnee ✔️";
                 document.getElementById('searchResult').textContent = resultText;
             })
             .catch(error => console.error(error));
