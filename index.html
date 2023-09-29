@@ -70,17 +70,37 @@
     </div>
 
     <script>
-    function search() {
-        const searchTerm = document.getElementById('searchInput').value;
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                const result = data.includes(searchTerm);
-                const resultText = result ? "⚠️Ce client existe dans la base de donnee ⚠️" : "✔️Ce client n'existe pas dans la base de donnee ✔️";
-                document.getElementById('searchResult').textContent = resultText;
-            })
-            .catch(error => console.error(error));
-    }
-</script>
+        function search() {
+            const searchInput = document.getElementById('searchInput').value;
+            const searchTerms = searchInput.split(' ');
+
+            // Create a function to check if a single phone number exists in the data
+            function checkNumber(number) {
+                return fetch('data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        return data.includes(number.trim()) ? "⚠️Ce client existe dans la base de donnee ⚠️" : "✔️Ce client n'existe pas dans la base de donnee ✔️";
+                    })
+                    .catch(error => console.error(error));
+            }
+
+            // Initialize an array to hold the promises for each number
+            const promises = [];
+
+            // Loop through each search term and create a promise for it
+            searchTerms.forEach(term => {
+                const result = checkNumber(term.trim());
+                promises.push(result);
+            });
+
+            // Wait for all promises to resolve
+            Promise.all(promises)
+                .then(results => {
+                    const resultText = results.map((result, index) => `${searchTerms[index].trim()}: ${result}`).join('\n');
+                    document.getElementById('searchResult').textContent = resultText;
+                });
+        }
+    </script>
 </body>
 </html>
+
