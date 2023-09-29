@@ -62,17 +62,27 @@
         #loading {
             display: none;
         }
+
+        #results-container {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
     <div class="search-container">
-         <img class="search-image" src="https://cdn.pixabay.com/photo/2021/10/12/19/40/money-6704593_1280.png" alt="Ecommerce Image" width="100" height="100">
+        <img class="search-image" src="https://cdn.pixabay.com/photo/2021/10/12/19/40/money-6704593_1280.png" alt="Ecommerce Image" width="100" height="100">
         <h1>Numéro de client</h1>
         <p>Enter phone numbers separated by spaces:</p>
         <input type="text" id="searchInput" placeholder="Example: 123456 789012">
         <button onclick="search()" style="margin-top: 10px;">📦 Verifier 📦</button>
         <p id="searchResult"></p>
         <div id="loading">Loading...</div>
+        <div id="results-container">
+            <h2>Search Results</h2>
+            <ul id="results-list"></ul>
+        </div>
     </div>
 
     <script>
@@ -113,17 +123,18 @@
                     // Hide loading indicator
                     document.getElementById('loading').style.display = 'none';
 
-                    // Create a new window to display the results
-                    const resultWindow = window.open('', '_blank', 'width=600,height=400');
-                    resultWindow.document.write('<html><head><title>Search Results</title></head><body>');
-                    resultWindow.document.write('<h1>Search Results</h1>');
+                    // Show the results container
+                    document.getElementById('results-container').style.display = 'block';
 
-                    results.forEach(result => {
-                        resultWindow.document.write(`<input type="text" value="Input: ${result}" readonly><br>`);
+                    // Display the results in a list
+                    const resultsList = document.getElementById('results-list');
+                    resultsList.innerHTML = '';
+
+                    searchTerms.forEach((term, index) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${term}: ${results[index]}`;
+                        resultsList.appendChild(listItem);
                     });
-
-                    resultWindow.document.write('</body></html>');
-                    resultWindow.document.close();
                 });
         }
     </script>
